@@ -1,0 +1,3 @@
+rootProject.name = 'Gamify'
+
+include ':app'
