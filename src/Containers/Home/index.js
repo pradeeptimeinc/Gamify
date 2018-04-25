@@ -66,15 +66,20 @@ class Home extends Component {
   renderPointItem = ({ item }) => {
     return (
       <View key={item.id} >
-        <Card style={{ backgroundColor: 'white', height: 200, width: 200, justifyContent: 'center', margin: 5 }}>
-          <CardImage style={{ border: 1, borderColor: 'gray' }}>
+        <Card style={{ backgroundColor: 'white', height: 85, width: 270, flexDirection:"row", justifyContent: 'flex-start', alignItems: 'flex-start', margin: 5, borderRadius:55, borderWidth:3, borderColor:"grey"}}>
+          <CardImage style={{ flex:2, border: 1, borderColor: 'gray' }}>
             <Image
-              style={{ width: 200, height: 150 }}
+              style={{ width: 75, height: 75, borderRadius: 35, margin:3 }}
               source={{ uri: 'https://getmdl.io/assets/demos/image_card.jpg' }}
             />
           </CardImage>
-          <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
-          <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.points}</Text>
+          <View style={{flex:2, alignItems:'center', justifyContent:'center', marginTop: 15, marginLeft:30}}>
+            <Text style={{ fontSize: 20, alignSelf: 'flex-start' }}>{item.first_name}</Text>
+            <Text style={{ fontSize: 20, alignSelf: 'flex-start' }}>{item.points} points</Text>
+          </View>
+          <View style={{backgroundColor: 'gold', position:'absolute', width:40, height:40, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', borderRadius:30, borderColor: 'white', borderWidth: 3 ,marginLeft:-10, paddingVertical:-40}}>
+            <Text style={{fontSize: 20, fontWeight: "bold"}} >1</Text>
+          </View>
         </Card>
       </View>
     )
