@@ -1,5 +1,5 @@
 import React, { Component, } from 'react';
-import { FlatList, ActivityIndicator } from 'react-native'
+import { FlatList, ActivityIndicator, Image, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Text,
@@ -8,6 +8,13 @@ import {
 // import { Card, ListItem, Button } from 'react-native-elements'
 import firebase from '../../Firebase';
 import _ from 'lodash';
+import {
+  Card,
+  CardTitle,
+  CardImage,
+  CardContent,
+  CardAction
+} from '../../components/Card'
 
 class Home extends Component {
   constructor(props) {
@@ -42,17 +49,33 @@ class Home extends Component {
   }
   renderItem = ({ item }) => {
     return (
-      <View key={item.id} style={{ backgroundColor: 'white', elevation: 4, height: 200, width: 100, justifyContent: 'center', margin: 5 }}>
-        <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
+      <View key={item.id} >
+        <Card style={{ backgroundColor: 'white', height: 200, width: 200, justifyContent: 'center', margin: 5 }}>
+          <CardImage style={{ border: 1, borderColor: 'gray' }}>
+            <Image
+              style={{ width: 200, height: 150 }}
+              source={{ uri: 'https://getmdl.io/assets/demos/image_card.jpg' }}
+            />
+          </CardImage>
+          <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
+        </Card>
       </View>
     )
     // return ()
   }
   renderPointItem = ({ item }) => {
     return (
-      <View key={item.id} style={{ backgroundColor: 'white', elevation: 4, height: 200, width: 100, justifyContent: 'center', margin: 5 }}>
-        <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
-        <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.points}</Text>
+      <View key={item.id} >
+        <Card style={{ backgroundColor: 'white', height: 200, width: 200, justifyContent: 'center', margin: 5 }}>
+          <CardImage style={{ border: 1, borderColor: 'gray' }}>
+            <Image
+              style={{ width: 200, height: 150 }}
+              source={{ uri: 'https://getmdl.io/assets/demos/image_card.jpg' }}
+            />
+          </CardImage>
+          <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
+          <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.points}</Text>
+        </Card>
       </View>
     )
     // return ()
@@ -107,26 +130,33 @@ class Home extends Component {
     const { topEmp, spotEmp, starEmp } = this.state;
     console.log('emps', this.state.topEmp)
     return (
-      <View style={{ backgroundColor: 'white', flex: 1 }}>
-        <View style={{ backgroundColor: 'white', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
+        <Card style={{ backgroundColor: 'white', flex: 1, margin: 30, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ fontSize: 25 }}> User Points 2000</Text>
-        </View>
-        <View style={{ backgroundColor: 'gray', flex: 1 }}>
+        </Card>
+        <View style={{ flex: 1 }}>
+          <Text style={{ fontSize: 20, alignItems: 'center' }}>Top Scorer</Text>
+
           {
+
             this.showTopList(topEmp)
           }
         </View>
-        <View style={{ backgroundColor: 'gray', flex: 1 }}>
+        <View style={{ flex: 1, marginTop: 10 }}>
+          <Text style={{ fontSize: 20, alignItems: 'center' }}>Star Award Winners</Text>
+
           {
             this.showStar(spotEmp)
           }
         </View>
-        <View style={{ backgroundColor: 'gray', flex: 1 }}>
+        <View style={{ flex: 1, marginTop: 10 }}>
+          <Text style={{ fontSize: 20, alignItems: 'center' }}>Spot Award Winners</Text>
+
           {
             this.showSpotList(starEmp)
           }
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
