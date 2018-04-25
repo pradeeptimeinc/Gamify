@@ -66,7 +66,7 @@ class Home extends Component {
   renderPointItem = ({ item }) => {
     return (
       <View key={item.id} >
-        <Card style={{ backgroundColor: 'white', height: 85, width: 270, flexDirection:"row", justifyContent: 'flex-start', alignItems: 'flex-start', margin: 5, borderRadius:55, borderWidth:3, borderColor:"grey"}}>
+        <Card style={{ backgroundColor: 'white', height: 85, width: 270, flexDirection:"row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop:5, marginRight:5, marginBottom:5, borderRadius:55, borderWidth:3, borderColor:"#bab8b8"}}>
           <CardImage style={{ flex:2, border: 1, borderColor: 'gray' }}>
             <Image
               style={{ width: 75, height: 75, borderRadius: 35, margin:3 }}
@@ -74,8 +74,8 @@ class Home extends Component {
             />
           </CardImage>
           <View style={{flex:2, alignItems:'center', justifyContent:'center', marginTop: 15, marginLeft:30}}>
-            <Text style={{ fontSize: 20, alignSelf: 'flex-start' }}>{item.first_name}</Text>
-            <Text style={{ fontSize: 20, alignSelf: 'flex-start' }}>{item.points} points</Text>
+            <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color:'#444343'}}>{item.first_name}</Text>
+            <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color:'#bab8b8'  }}>{item.points} points</Text>
           </View>
           <View style={{backgroundColor: 'gold', position:'absolute', width:40, height:40, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', borderRadius:30, borderColor: 'white', borderWidth: 3 ,marginLeft:-10, paddingVertical:-40}}>
             <Text style={{fontSize: 20, fontWeight: "bold"}} >1</Text>
