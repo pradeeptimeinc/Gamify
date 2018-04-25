@@ -37,7 +37,7 @@ npm-debug.log
 yarn-error.log
 
 # ignore firebase
-src/Firebase
+src/Firebase/
 
 # BUCK
 buck-out/
