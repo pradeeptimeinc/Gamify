@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "78258854825",
+    "firebase_url": "https://employee-engagement-14c56.firebaseio.com",
+    "project_id": "employee-engagement-14c56",
+    "storage_bucket": "employee-engagement-14c56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78258854825:android:ce33910420ce397b",
+        "android_client_info": {
+          "package_name": "com.gamify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78258854825-7p489oi7hpcgkbie1ojln87276e4d2d4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtc8W9dX2IMLjzhfXHF3TcvOKjtlCS4IQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

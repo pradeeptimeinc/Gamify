@@ -57,6 +57,9 @@ class Home extends Component {
         {
           this.showTopList(employees)
         }
+        {
+          this.showTopList(employees)
+        }
 
       </View>
     );
