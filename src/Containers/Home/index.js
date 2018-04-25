@@ -15,6 +15,7 @@ class Home extends Component {
       employees: []
     }
   }
+
   componentDidMount() {
     const db = firebase.database();
     db.ref('/employees').once('value', (snapshot) => {
@@ -25,13 +26,14 @@ class Home extends Component {
       })
     });
   }
+
   renderItem = ({ item }) => {
     return (
       <View style={{ backgroundColor: 'white', elevation: 4, height: 200, width: 100, justifyContent: 'center', margin: 5 }}>
         <Text key={item.id} style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
       </View>
     )
-    // return ()
+    
   }
   showTopList = (employees) => {
     if (employees && employees.length > 0) {
