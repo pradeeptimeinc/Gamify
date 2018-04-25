@@ -32,8 +32,7 @@ class Home extends Component {
       <View style={{ backgroundColor: 'white', elevation: 4, height: 200, width: 100, justifyContent: 'center', margin: 5 }}>
         <Text key={item.id} style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
       </View>
-    )
-    
+    )    
   }
   showTopList = (employees) => {
     if (employees && employees.length > 0) {
