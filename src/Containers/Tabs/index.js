@@ -33,7 +33,10 @@ export default TabNavigator({
         iconName = `ios-home${focused ? '' : '-outline'}`;
       } else if (routeName === 'Feed') {
         iconName = `ios-paper${focused ? '' : '-outline'}`;
+      } else if (routeName === 'Quiz') {
+        iconName = `ios-help-circle-outliner${focused ? '' : '-outline'}`;
       }
+
 
       // You can return any component that you like here! We usually use an
       // icon component from react-native-vector-icons

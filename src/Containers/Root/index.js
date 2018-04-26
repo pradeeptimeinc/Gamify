@@ -9,8 +9,9 @@ class Root extends Component {
     return (
       <View style={{ flex: 1, marginTop: 20 }}>
         {
-          userLoginStatus ? <Tabs /> : <SignIn />
+         // userLoginStatus ? <Tabs /> : <SignIn />
         }
+        <Tabs/>
       </View>
     );
   }
