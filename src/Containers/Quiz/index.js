@@ -33,6 +33,7 @@ export default class Quiz extends Component {
     
     onClickQuestion(item) {
       console.log('item click',item)
+      this.props.navigation.navigate('QuizDetails', { ...item });
     }
     
       renderQuestions() {
@@ -40,7 +41,7 @@ export default class Quiz extends Component {
         console.log('renderQuestions State ',this.state)
         console.log('renderQuestions quiz ',quiz)
         return (
-        <View style={{ backgroundColor: 'white', flex: 1, marginTop:40 }}>
+        <View style={{ backgroundColor: 'white', flex: 1 }}>
         {
           <FlatList
           ItemSeparatorComponent = {this.FlatListItemSeparator}                    
