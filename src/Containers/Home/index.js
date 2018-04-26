@@ -70,14 +70,14 @@ class Home extends Component {
     const { item, index } = props;
     return (
       <View key={item.id} >
-        <Card style={{ backgroundColor: 'white', height: 60, width: 220, flexDirection: "row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop: 5, marginRight: 5, marginBottom: 5, borderRadius: 55, borderWidth: 3, borderColor: "#bab8b8" }}>
+        <Card style={{ backgroundColor: 'white', height: 60, width: 200, flexDirection: "row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop: 5, marginRight: 5, marginBottom: 5, borderRadius: 55, borderWidth: 3, borderColor: "#bab8b8" }}>
           <CardImage style={{ flex: 1, border: 1, borderColor: 'gray' }}>
             <Image
               style={{ width: 50, height: 50, borderRadius: 25, margin: 3 }}
               source={{ uri: `${item.profile_url}` }}
             />
           </CardImage>
-          <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', marginTop: 6, marginLeft:8 }}>
+          <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', marginTop: 2, marginLeft:8 }}>
             <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color: '#444343' }}>{item.first_name}</Text>
             <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color: '#bab8b8' }}>{item.points} points</Text>
           </View>
