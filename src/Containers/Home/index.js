@@ -1,10 +1,11 @@
 import React, { Component, } from 'react';
-import { FlatList, ActivityIndicator, Image, ScrollView } from 'react-native'
+import { FlatList, ActivityIndicator, Image, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Text,
-  View
+  View,
 } from 'react-native';
+import AnimateNumber from 'react-native-countup'
 // import { Card, ListItem, Button } from 'react-native-elements'
 import firebase from '../../Firebase';
 import _ from 'lodash';
@@ -15,7 +16,6 @@ import {
   CardContent,
   CardAction
 } from '../../components/Card'
-
 class Home extends Component {
   constructor(props) {
     super(props)
@@ -29,17 +29,13 @@ class Home extends Component {
   componentDidMount() {
     const db = firebase.database();
     // const query = db.ref('/employees').orderByChild('points');
-
     db.ref('/employees').once('value', (snapshot) => {
-
       const emps = Object.values(snapshot.val());
       console.log('snapshot', emps);
       let empsTop = _.orderBy(emps, ['points'], ['desc']);
       empsTop = empsTop.splice(0, 5);
-
       let spotEmp = _.filter(emps, ['spot', true]);
       // spotEmp = spotEmp.splice(0, 5);
-      console.log('empsSpot', spotEmp);
       let starEmp = _.filter(emps, ['star', true]);
       this.setState({
         topEmp: empsTop,
@@ -47,29 +43,24 @@ class Home extends Component {
         starEmp: starEmp
       })
     });
-    console.log('this.props.user', this.props.user);
     this.setState({
       userPoints: this.props.user.points
     })
-    // db.ref('employees').orderByChild("id").equalTo('1085').once("value", snapshot => {
-    //   const userData = Object.values(snapshot.val())[0];
-    //   console.log('userData', userData);
-    //   this.setState({
-    //     userPoints: userData.points
-    //   });
-    // });
   }
   renderItem = ({ item }) => {
     return (
       <View key={item.id} >
-        <Card style={{ backgroundColor: 'white', height: 200, width: 200, justifyContent: 'center', margin: 5 }}>
-          <CardImage style={{ border: 1, borderColor: 'gray' }}>
+        <Card style={{ backgroundColor: '#eee', height: 200, width: 200, margin: 5 }}>
+          <CardImage style={{ border: 1, borderColor: 'gray', justifyContent: 'center', elevation: 4 }}>
             <Image
               style={{ width: 200, height: 150 }}
-              source={{ uri: 'https://getmdl.io/assets/demos/image_card.jpg' }}
+              source={{ uri: `${item.profile_url}` }}
             />
+            <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{item.first_name} {item.last_name}</Text>
           </CardImage>
-          <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ fontSize: 15 }}>{item.team}</Text>
+          </View>
         </Card>
       </View>
     )
@@ -77,14 +68,13 @@ class Home extends Component {
   }
   renderPointItem = (props) => {
     const { item, index } = props;
-    console.log('props', props);
     return (
       <View key={item.id} >
         <Card style={{ backgroundColor: 'white', height: 85, width: 270, flexDirection: "row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop: 5, marginRight: 5, marginBottom: 5, borderRadius: 55, borderWidth: 3, borderColor: "#bab8b8" }}>
           <CardImage style={{ flex: 2, border: 1, borderColor: 'gray' }}>
             <Image
               style={{ width: 75, height: 75, borderRadius: 35, margin: 3 }}
-              source={{ uri: 'https://getmdl.io/assets/demos/image_card.jpg' }}
+              source={{ uri: `${item.profile_url}` }}
             />
           </CardImage>
           <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', marginTop: 15, marginLeft: 30 }}>
@@ -106,6 +96,7 @@ class Home extends Component {
         data={employees}
         keyExtractor={(emp) => emp.id}
         renderItem={this.renderPointItem}
+        showsHorizontalScrollIndicator={false}
       // numColumns={2}
       />)
     } else {
@@ -121,6 +112,7 @@ class Home extends Component {
         data={employees}
         keyExtractor={(emp) => emp.id}
         renderItem={this.renderItem}
+        showsHorizontalScrollIndicator={false}
       // numColumns={2}
       />)
     } else {
@@ -136,6 +128,7 @@ class Home extends Component {
         data={employees}
         keyExtractor={(emp) => emp.id}
         renderItem={this.renderItem}
+        showsHorizontalScrollIndicator={false}
       // numColumns={2}
       />)
     } else {
@@ -144,33 +137,38 @@ class Home extends Component {
       )
     }
   }
-
   render() {
-    const { topEmp, spotEmp, starEmp, userPoints } = this.state;
-    console.log('emps', this.state.topEmp)
+    const { topEmp, spotEmp, starEmp } = this.state;
+    const { user } = this.props;
     return (
       <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
-        <Card style={{ backgroundColor: 'white', flex: 1, margin: 30, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontSize: 25 }}> User Points {userPoints}</Text>
+        <Card style={{ backgroundColor: 'white', flex: 1, margin: 20, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ fontSize: 30, fontWeight: 'bold', alignItems: 'center', flexDirection: 'row' }}>
+            <Image
+              style={[styles.logo, {
+                resizeMode: Image.resizeMode.contain,
+              },]}
+              source={require('../../assets/Points.jpg')}
+            />
+            <Text style={{ height: 50, marginTop: 25, marginLeft: 5, fontSize: 20, fontWeight: 'bold', }}>
+              <AnimateNumber value={user.points} countBy={5} timing="easeOut" />
+            </Text>
+          </View>
         </Card>
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 20, alignItems: 'center' }}>Top Scorer</Text>
-
+          <Text style={{ fontSize: 22, alignItems: 'center', fontWeight: 'bold' }}>Top 5 Scorer</Text>
           {
-
             this.showTopList(topEmp)
           }
         </View>
         <View style={{ flex: 1, marginTop: 10 }}>
-          <Text style={{ fontSize: 20, alignItems: 'center' }}>Star Award Winners</Text>
-
+          <Text style={{ fontSize: 22, alignItems: 'center', fontWeight: 'bold' }}>Star Award Winners</Text>
           {
             this.showStar(spotEmp)
           }
         </View>
         <View style={{ flex: 1, marginTop: 10 }}>
-          <Text style={{ fontSize: 20, alignItems: 'center' }}>Spot Award Winners</Text>
-
+          <Text style={{ fontSize: 22, alignItems: 'center', fontWeight: 'bold' }}>Spot Award Winners</Text>
           {
             this.showSpotList(starEmp)
           }
@@ -179,7 +177,13 @@ class Home extends Component {
     );
   }
 }
-
+const styles = StyleSheet.create({
+  logo: {
+    width: 50,
+    height: 50,
+    maxHeight: 200,
+  }
+})
 const mapStateToProps = (state) => {
   console.log('state', state);
   return {
@@ -187,4 +191,3 @@ const mapStateToProps = (state) => {
   }
 }
 export default connect(mapStateToProps)(Home);
-
