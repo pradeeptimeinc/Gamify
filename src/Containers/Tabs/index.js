@@ -1,15 +1,17 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
+import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import HomeScreen from '../Home';
 import FeedScreen from '../Feed';
+import QuizScreen from '../Quiz';
 import PeersScreen from '../Peers';
 
 export default TabNavigator({
   Home: { screen: HomeScreen },
   Feed: { screen: FeedScreen },
-  Peers: { screen: PeersScreen }
+  Quiz: { screen: QuizScreen },
+  Peers: { screen: PeersScreen },
 },
   {
     navigationOptions: ({ navigation }) => ({
@@ -20,6 +22,8 @@ export default TabNavigator({
           iconName = `ios-home${focused ? '' : '-outline'}`;
         } else if (routeName === 'Feed') {
           iconName = `ios-paper${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Quiz') {
+          iconName = `ios-help-circle-outliner${focused ? '' : '-outline'}`;
         } else if (routeName === 'Peers') {
           iconName = `ios-chatbubbles${focused ? '' : '-outline'}`;
         }

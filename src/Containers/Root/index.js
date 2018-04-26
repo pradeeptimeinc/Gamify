@@ -11,6 +11,7 @@ class Root extends Component {
         {
           userLoginStatus ? <Tabs /> : <SignIn />
         }
+        {/* <Tabs/> */}
       </View>
     );
   }

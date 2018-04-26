@@ -26,6 +26,7 @@ class Home extends Component {
       userPoints: 0
     }
   }
+
   componentDidMount() {
     const db = firebase.database();
     // const query = db.ref('/employees').orderByChild('points');
@@ -47,6 +48,7 @@ class Home extends Component {
       userPoints: this.props.user.points
     })
   }
+
   renderItem = ({ item }) => {
     return (
       <View key={item.id} >
@@ -86,8 +88,7 @@ class Home extends Component {
           </View>
         </View>
       </View>
-    )
-    // return ()
+    )    
   }
   showTopList = (employees) => {
     if (employees && employees.length > 0) {

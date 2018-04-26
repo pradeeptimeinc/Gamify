@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, FlatList, Image , TouchableOpacity} from 'react-native'
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 import firebase from '../../Firebase'
 import { connect } from 'react-redux'
 import {
@@ -51,14 +51,14 @@ class Peers extends React.Component {
   renderItem = ({ item }) => {
     console.log('item ic ', item);
     return (
-      < TouchableOpacity onPress={() => this.openChat(item)} style={{ backgroundColor: 'white',flexDirection:"row", justifyContent: 'flex-start', justifyContent: 'center' }}> 
-        <CardImage style={{ flex:2, border: 1}}>
+      < TouchableOpacity onPress={() => this.openChat(item)} style={{ backgroundColor: 'white', flexDirection: "row", justifyContent: 'flex-start', justifyContent: 'center' }}>
+        <CardImage style={{ flex: 2, border: 1 }}>
           <Image
-            style={{ width: 60, height: 60, borderRadius: 30, margin:3, marginLeft:10, borderColor: "#d6d4d4", borderWidth:3 }}
+            style={{ width: 60, height: 60, borderRadius: 30, margin: 3, marginLeft: 10, borderColor: "#d6d4d4", borderWidth: 3 }}
             source={{ uri: `${item.profile_url}` }}
           />
         </CardImage>
-        <Text style={{ flex:3, fontSize: 20, alignSelf: 'center', margin:5 , color: '#444343'}}>{item.first_name}</Text>
+        <Text style={{ flex: 3, fontSize: 20, alignSelf: 'center', margin: 5, color: '#444343' }}>{item.first_name}</Text>
       </TouchableOpacity>
     )
   }
@@ -67,7 +67,7 @@ class Peers extends React.Component {
     return (
       <View
         style={{
-          alignSelf:'center',
+          alignSelf: 'center',
           height: 1,
           width: "100%",
           backgroundColor: "#d6d4d4",
@@ -80,13 +80,13 @@ class Peers extends React.Component {
     console.log('this.user', this.state.peers);
     const { peers } = this.state;
     return (
-        <FlatList
-          ItemSeparatorComponent={this.FlatListItemSeparator}
-          data={peers}
-          extraData={peers}
-          keyExtractor={(peer) => { peer.id }}
-          renderItem={this.renderItem}
-        />);
+      <FlatList
+        ItemSeparatorComponent={this.FlatListItemSeparator}
+        data={peers}
+        extraData={peers}
+        keyExtractor={(peer) => { peer.id }}
+        renderItem={this.renderItem}
+      />);
   }
 }
 const mapStateToProps = (state) => {
