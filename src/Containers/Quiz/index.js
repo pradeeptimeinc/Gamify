@@ -3,7 +3,8 @@ import { Text, View, FlatList, ListItem, ActivityIndicator } from 'react-native'
 import firebase from '../../Firebase';
 import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
-import { Card } from '../../components/Card'
+import { Card } from '../../components/Card';
+import Icon from 'react-native-vector-icons/FontAwesome'
 export default class Quiz extends Component {
 
   constructor(props) {
@@ -18,7 +19,8 @@ export default class Quiz extends Component {
       const parsedQuiz = Object.values(dbQuiz)
       console.log('final quiz', parsedQuiz);
       this.setState({
-        quiz: parsedQuiz
+        quiz: parsedQuiz,
+        ansIndex: 1000
       })
     });
   }
@@ -33,8 +35,8 @@ export default class Quiz extends Component {
   }
 
   onClickQuestion(item) {
-    console.log('item click', item)
-    this.props.navigation.navigate('QuizDetails', { ...item });
+    
+    
   }
 
   renderQuestions() {
@@ -79,17 +81,35 @@ export default class Quiz extends Component {
 
   onClickAnswer = (option, index)=>{
     console.log('Answer '+option);
-    
+    this.setState({
+      ansIndex: index
+  })
+  //this.refs.carousel.snapToNext()
+  console.log(' next',this.refs)
+  //snapToNext (animated = true, fireCallback = true)
 }
+  onSnapToItem(slideIndex){
+    console.log('onSnapToItem')
+  }
 
   renderAnswerOptions(options) {
-    console.log('renderAnswerOPtions', options)
     let arr = [];
     options.map((option, index) => {
+      let backgroundColor = this.state.ansIndex == index ? '#3f7ee2' : 'white';
+      let textColor = this.state.ansIndex == index ? 'white' : 'black';
       arr.push(
-        <Text ref={index} key={index} style={{ fontSize: 16 }} onPress={() => this.onClickAnswer(option, index)} >
-          {index + ') '}{option}
-        </Text>
+        <View style = {{width:200, borderColor: 'black', 
+        backgroundColor: backgroundColor,
+        borderRadius: 10,
+        width: 250,
+        marginBottom: 10,
+        borderBottomColor: '#000000',
+        alignItems: 'center',        
+        borderWidth: 1}}>  
+          <Text ref={index} key={index} style={{color: textColor, fontFamily: 'Avenir-Heavy',fontSize: 18, paddingBottom: 10,marginTop:10 }} onPress={() => this.onClickAnswer(option, index)} >
+          {index+1+'. '}{option}
+          </Text>
+        </View>
       )
     })
     return arr;
