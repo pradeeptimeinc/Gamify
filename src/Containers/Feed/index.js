@@ -18,7 +18,8 @@ class Feed extends Component {
     this.state = {
       feeds: [],
       initailLoad:true,
-      modalVisible: false
+      modalVisible: false,
+      text: ''
     }
   }
 
@@ -72,7 +73,7 @@ class Feed extends Component {
           alignSelf:'center',
           height: 1,
           width: "90%",
-          backgroundColor: "#eeeeee",
+          backgroundColor: "#d6d4d4",
         }}
       />
     );
@@ -97,22 +98,30 @@ class Feed extends Component {
   addNewFeed = () => {
     const db = firebase.database();
     const {first_name, profile_url, id} = this.props.user;
+    
     db.ref('/feeds').push().set({
         author: first_name,
-        content: "New content jfdghjdbjfbds",
+        content: this.state.text,
         id: id,
         timestamp: Date.now(),
         image: profile_url 
     });
+    this.setState({
+      text: ''
+    })
   }
 
   render() {
-    const { feeds, modalVisible} = this.state
+    const { feeds, modalVisible, text} = this.state
     return (
       <View style={{ backgroundColor: 'white', flex: 1, marginTop: 20 }}>
-        <View style={{height:40, margin:10, flexDirection: 'row', justifyContent:"flex-start"}}>
-          <TextInput style={{ backgroundColor: "grey", width:"90%"}}/> 
-          <AddIcon style={{alignSelf:"center"}}  name='note-add' size={25} onPress={this.setModal} />
+        <View style={{height:60, margin:10, flexDirection: 'row', justifyContent:"flex-start", borderColor: 'grey', borderWidth: 2, borderRadius: 30}}>
+          <TextInput 
+          placeholder="Post New Feed"
+          style={{ backgroundColor: "white", width:"85%", marginLeft:20, height:53, alignSelf: 'center' }}
+          onChangeText={(text) => this.setState({text})}
+          value={text}/> 
+          <AddIcon style={{alignSelf:"center"}}  name='send' size={30} onPress={this.addNewFeed} />
         </View>
         {
           this.showFeeds(feeds)

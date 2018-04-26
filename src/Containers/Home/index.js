@@ -1,5 +1,5 @@
 import React, { Component, } from 'react';
-import { FlatList, ActivityIndicator, Image, ScrollView, StyleSheet, Modal } from 'react-native'
+import { FlatList, ActivityIndicator, Image, ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import {
   Text,
