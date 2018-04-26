@@ -22,14 +22,17 @@ export default class Quiz extends Component {
         });
     }
       
-      renderItem = ({ item })=> {        
-        console.log("Render Item",item.quiz)
+      renderItem = ({ item })=> {                
         return (        
         <View style={{ flexDirection: 'row', backgroundColor: 'white', elevation: 4,  margin: 20 }}>
-        <Text key={item.key} style={{ fontSize: 18}}>{item.question_id+')'}</Text>
-        <Text key={item.key} style={{ fontSize: 18,paddingLeft: 10}}>{item.question}</Text>
+        <Text key={item.question_id} style={{ fontSize: 18}} > {item.question_id+')'} </Text>
+        <Text key={item.question_id} style={{ fontSize: 18,paddingLeft: 10}} onPress={this.onClickQuestion.bind(this, item)}>{item.question}</Text>
         </View> 
       )
+    }
+    
+    onClickQuestion(item) {
+      console.log('item click',item)
     }
     
       renderQuestions() {
@@ -42,7 +45,7 @@ export default class Quiz extends Component {
           <FlatList
           ItemSeparatorComponent = {this.FlatListItemSeparator}                    
           data = {quiz}   
-          keyExtractor={(quiz) => quiz.question_id}       
+          keyExtractor={(quiz) => quiz.question_id}                 
           renderItem  = {this.renderItem}
         />
         }
