@@ -80,17 +80,22 @@ export default class Quiz extends Component {
   }
 
   onClickAnswer = (option, index)=>{
+  console.log(' next',this.refs)
+    
     console.log('Answer '+option);
     this.setState({
       ansIndex: index
   })
-  //this.refs.carousel.snapToNext()
-  console.log(' next',this.refs)
+  setTimeout(()=> {
+    this.setState({      
+      ansIndex: 1000
+    })
+    this.refs.carousel.snapToNext(animated=true)
+  }, 550)
+
   //snapToNext (animated = true, fireCallback = true)
 }
-  onSnapToItem(slideIndex){
-    console.log('onSnapToItem')
-  }
+ 
 
   renderAnswerOptions(options) {
     let arr = [];
@@ -99,13 +104,14 @@ export default class Quiz extends Component {
       let textColor = this.state.ansIndex == index ? 'white' : 'black';
       arr.push(
         <View style = {{width:200, borderColor: 'black', 
+        
         backgroundColor: backgroundColor,
         borderRadius: 10,
         width: 250,
         marginBottom: 10,
         borderBottomColor: '#000000',
         alignItems: 'center',        
-        borderWidth: 1}}>  
+        borderWidth: 1}} key={index}>  
           <Text ref={index} key={index} style={{color: textColor, fontFamily: 'Avenir-Heavy',fontSize: 18, paddingBottom: 10,marginTop:10 }} onPress={() => this.onClickAnswer(option, index)} >
           {index+1+'. '}{option}
           </Text>
@@ -137,7 +143,7 @@ export default class Quiz extends Component {
       <Carousel
         layout='tinder'
         layoutCardOffset={quiz.length}
-        ref={(c) => { this._carousel = c; }}
+        ref={'carousel'}
         data={quiz}
         renderItem={this._renderItemCarousel}
         sliderWidth={350}
