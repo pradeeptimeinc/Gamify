@@ -22,7 +22,8 @@ class Home extends Component {
     this.state = {
       topEmp: [],
       starEmp: [],
-      spotEmp: []
+      spotEmp: [],
+      userPoints: 0
     }
   }
   componentDidMount() {
@@ -46,6 +47,17 @@ class Home extends Component {
         starEmp: starEmp
       })
     });
+    console.log('this.props.user', this.props.user);
+    this.setState({
+      userPoints: this.props.user.points
+    })
+    // db.ref('employees').orderByChild("id").equalTo('1085').once("value", snapshot => {
+    //   const userData = Object.values(snapshot.val())[0];
+    //   console.log('userData', userData);
+    //   this.setState({
+    //     userPoints: userData.points
+    //   });
+    // });
   }
   renderItem = ({ item }) => {
     return (
@@ -63,22 +75,24 @@ class Home extends Component {
     )
     // return ()
   }
-  renderPointItem = ({ item }) => {
+  renderPointItem = (props) => {
+    const { item, index } = props;
+    console.log('props', props);
     return (
       <View key={item.id} >
-        <Card style={{ backgroundColor: 'white', height: 85, width: 270, flexDirection:"row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop:5, marginRight:5, marginBottom:5, borderRadius:55, borderWidth:3, borderColor:"#bab8b8"}}>
-          <CardImage style={{ flex:2, border: 1, borderColor: 'gray' }}>
+        <Card style={{ backgroundColor: 'white', height: 85, width: 270, flexDirection: "row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop: 5, marginRight: 5, marginBottom: 5, borderRadius: 55, borderWidth: 3, borderColor: "#bab8b8" }}>
+          <CardImage style={{ flex: 2, border: 1, borderColor: 'gray' }}>
             <Image
-              style={{ width: 75, height: 75, borderRadius: 35, margin:3 }}
+              style={{ width: 75, height: 75, borderRadius: 35, margin: 3 }}
               source={{ uri: 'https://getmdl.io/assets/demos/image_card.jpg' }}
             />
           </CardImage>
-          <View style={{flex:2, alignItems:'center', justifyContent:'center', marginTop: 15, marginLeft:30}}>
-            <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color:'#444343'}}>{item.first_name}</Text>
-            <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color:'#bab8b8'  }}>{item.points} points</Text>
+          <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', marginTop: 15, marginLeft: 30 }}>
+            <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color: '#444343' }}>{item.first_name}</Text>
+            <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color: '#bab8b8' }}>{item.points} points</Text>
           </View>
-          <View style={{backgroundColor: 'gold', position:'absolute', width:40, height:40, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', borderRadius:30, borderColor: 'white', borderWidth: 3 ,marginLeft:-10, paddingVertical:-40}}>
-            <Text style={{fontSize: 20, fontWeight: "bold"}} >1</Text>
+          <View style={{ backgroundColor: 'gold', position: 'absolute', width: 40, height: 40, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', borderRadius: 30, borderColor: 'white', borderWidth: 3, marginLeft: -10, paddingVertical: -40 }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }} >{index + 1}</Text>
           </View>
         </Card>
       </View>
@@ -132,12 +146,12 @@ class Home extends Component {
   }
 
   render() {
-    const { topEmp, spotEmp, starEmp } = this.state;
+    const { topEmp, spotEmp, starEmp, userPoints } = this.state;
     console.log('emps', this.state.topEmp)
     return (
       <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
         <Card style={{ backgroundColor: 'white', flex: 1, margin: 30, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontSize: 25 }}> User Points 2000</Text>
+          <Text style={{ fontSize: 25 }}> User Points {userPoints}</Text>
         </Card>
         <View style={{ flex: 1 }}>
           <Text style={{ fontSize: 20, alignItems: 'center' }}>Top Scorer</Text>
@@ -169,7 +183,7 @@ class Home extends Component {
 const mapStateToProps = (state) => {
   console.log('state', state);
   return {
-    issues: state,
+    user: state.user,
   }
 }
 export default connect(mapStateToProps)(Home);
