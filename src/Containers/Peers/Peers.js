@@ -46,7 +46,7 @@ class Peers extends React.Component {
   }
   openChat = (item) => {
     console.log('calling chat', { title: 'ejrfjerb' })
-    this.props.navigation.navigate('Chat', { title: item.first_name, id: item.id });
+    this.props.navigation.navigate('Chat', { title: item.first_name, id: item.id, profilePic: item.profile_url });
   }
   renderItem = ({ item }) => {
     console.log('item ic ', item);

@@ -23,7 +23,7 @@ export default TabNavigator({
         } else if (routeName === 'Feed') {
           iconName = `ios-paper${focused ? '' : '-outline'}`;
         } else if (routeName === 'Quiz') {
-          iconName = `ios-help-circle-outliner${focused ? '' : '-outline'}`;
+          iconName = `ios-help-circle${focused ? '' : '-outline'}`;
         } else if (routeName === 'Peers') {
           iconName = `ios-chatbubbles${focused ? '' : '-outline'}`;
         }

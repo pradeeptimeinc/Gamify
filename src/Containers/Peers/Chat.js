@@ -78,13 +78,14 @@ class Chat extends React.Component {
   };
 
   renderItem = ({ item }) => {
-    console.log("propsdata", this.props.user.id, item)
+    const image = (this.props.user.id === item.sender) ? this.props.user.profile_url : this.props.navigation.state.params.profilePic
+    console.log("propsdata", image)
     return (this.props.user.id === item.sender) ?  (
-      < View style={{ backgroundColor: 'white', flexDirection: "row", justifyContent: 'flex-start', margin: 3, borderTopRightRadius:30, borderBottomRightRadius:30 }}>
-        <CardImage style={{ flex: 2, border: 1 }}>
+      < View style={{ backgroundColor: 'white', flexDirection: "row", justifyContent: 'flex-start', margin: 3, borderTopRightRadius:30, borderBottomRightRadius:30, borderTopLeftRadius:30 }}>
+        <CardImage style={{ flex: 2 }}>
           <Image
             style={{ width: 60, height: 60, borderRadius: 30, margin: 3, borderColor: "#d6d4d4", borderWidth: 3 }}
-            source={{ uri: `${item.profile_url}` }}
+            source={{ uri: image }}
           />
         </CardImage>
         <View style={{flex:3}}>
@@ -93,15 +94,15 @@ class Chat extends React.Component {
         </View>
       </View>
     ) : 
-    (< View style={{ backgroundColor: 'white', flexDirection: "row", justifyContent: 'flex-end', margin: 3, borderTopLeftRadius:30, borderBottomLeftRadius:30 }}>
+    (< View style={{ backgroundColor: 'grey', flexDirection: "row", justifyContent: 'flex-end', margin: 3, borderTopLeftRadius:30, borderBottomLeftRadius:30, borderTopRightRadius:30 }}>
       <View style={{flex:3}}>
-        <Text style={{ fontSize: 16, alignSelf: 'flex-end', margin:5, marginRight:20 }}>{item.message}</Text>
-        <Text style={{ fontSize: 12, alignSelf:'flex-start',color:'#444343', marginLeft:10 }}>{moment(item.timestamp).format('MMMM Do, h:mm:ss a')}</Text>
+        <Text style={{ fontSize: 16, alignSelf: 'flex-end', color:'#f2efef', margin:5, marginRight:20 }}>{item.message}</Text>
+        <Text style={{ fontSize: 12, alignSelf:'flex-start',color:'white', marginLeft:10 }}>{moment(item.timestamp).format('MMMM Do, h:mm:ss a')}</Text>
       </View>
-      <CardImage style={{ flex: 2, border: 1 }}>
+      <CardImage style={{ flex: 2}}>
       <Image
-        style={{ width: 60, height: 60, borderRadius: 30, margin: 3, borderColor: "#d6d4d4", borderWidth: 3 }}
-        source={{ uri: `${item.profile_url}` }}
+        style={{ width: 60, height: 60, borderRadius: 30, margin: 3, borderColor: "#d6d4d4", borderWidth: 3, alignSelf:'flex-end'  }}
+        source={{ uri: image }}
       />
     </CardImage>
     </View>)

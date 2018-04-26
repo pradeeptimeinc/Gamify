@@ -156,7 +156,7 @@ export default class Quiz extends Component {
     const { quiz } = this.state
     return (
       <Carousel
-        layout='tinder'
+        layout='stack'
         layoutCardOffset={quiz.length}
         ref={'carousel'}
         data={quiz}
