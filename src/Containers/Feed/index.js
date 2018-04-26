@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { FlatList, ActivityIndicator, Text, View, TextInput,Image } from 'react-native'
+import { FlatList, ActivityIndicator, Text, View, TextInput, Image,  Modal, TouchableHighlight} from 'react-native'
 import AddIcon from 'react-native-vector-icons/MaterialIcons' 
 import firebase from '../../Firebase'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import {
   Card,
@@ -10,27 +11,40 @@ import {
   CardContent,
   CardAction
 } from '../../components/Card'
-export default class Feed extends Component {
+
+class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feeds: {}
+      feeds: [],
+      initailLoad:true,
+      modalVisible: false
     }
   }
 
   componentDidMount() {
     const db = firebase.database();
     db.ref('/feeds').once('value', (snapshot) => {
-      const feed = snapshot.val();
-      console.log('snapshot', feed);
+      const feed = Object.values(snapshot.val());
       this.setState({
-       feeds: feed
+       feeds: feed,
+       initailLoad : false
       })
     });
+    db.ref('/feeds').on('child_added', this.onItemAdded)
+  }
+  onItemAdded =  (snapshot)=>{
+    const {feeds, initailLoad}  = this.state;
+    if(!initailLoad){
+       const newfeeds = [snapshot.val(),...feeds];
+      this.setState({
+        feeds: newfeeds
+      })
+    }
+   
   }
 
   renderItem = ({ item }) => {
-    console.log(item)
     return (
       < View style={{ backgroundColor: 'white',flexDirection:"row", justifyContent: 'flex-start', justifyContent: 'center', margin: 5 }}>
         <CardImage style={{ flex:2, border: 1 }}>
@@ -40,10 +54,10 @@ export default class Feed extends Component {
           />
         </CardImage>
         <View style={{flex:3}}>
-          <Text key={item.id} style={{ fontSize: 16, alignItems: 'center', margin:5 }}>{item.content}</Text>
+          <Text style={{ fontSize: 16, alignItems: 'center', margin:5 }}>{item.content}</Text>
           <View style={{flexDirection:"row",alignItems:'flex-end', height:50}}>
-            <Text key={item.id} style={{ flex:3,fontSize: 12, fontWeight: 'bold', color:'#bab8b8' }}>Prashant</Text>
-            <Text key={item.id} style={{ flex:4,fontSize: 12, alignSelf:'flex-end',color:'#444343' }}>{moment(Date.now()).format('MMMM Do, h:mm:ss a')}</Text>
+            <Text style={{ flex:3,fontSize: 12, fontWeight: 'bold', color:'#bab8b8' }}>{item.author}</Text>
+            <Text style={{ flex:4,fontSize: 12, alignSelf:'flex-end',color:'#444343' }}>{moment(item.timestamp).format('MMMM Do, h:mm:ss a')}</Text>
           </View>
         </View>
       </View>
@@ -65,16 +79,12 @@ export default class Feed extends Component {
   }
 
   showFeeds = (feeds) => {
-    console.log("show feeds::", Object.values(feeds))
-    let feedsToShow = Object.values(feeds)
-    const key = Object.keys(feeds)
-    console.log("Keys::",key)
-    if(feedsToShow && feedsToShow.length > 0) {
+    if(feeds && feeds.length > 0) {
       return(<FlatList
       ItemSeparatorComponent = {this.FlatListItemSeparator}          
-      data={feedsToShow}
-      extraData={feedsToShow}
-      keyExtractor={(key)=>{key}}
+      data={feeds}
+      extraData={feeds}
+      keyExtractor={(feed)=>{feed.timestamp}}
       renderItem={this.renderItem}
     />)
     } else {
@@ -83,23 +93,26 @@ export default class Feed extends Component {
       )
     } 
   }
+
   addNewFeed = () => {
     const db = firebase.database();
+    const {first_name, profile_url, id} = this.props.user;
     db.ref('/feeds').push().set({
-        content: "this is a dummty content added 2",
-        id:1083,
+        author: first_name,
+        content: "New content jfdghjdbjfbds",
+        id: id,
         timestamp: Date.now(),
-        image:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Hopetoun_falls.jpg/600px-Hopetoun_falls.jpg"
+        image: profile_url 
     });
   }
+
   render() {
-    const { feeds } = this.state
-    console.log("feeds::", feeds)
+    const { feeds, modalVisible} = this.state
     return (
       <View style={{ backgroundColor: 'white', flex: 1, marginTop: 20 }}>
         <View style={{height:40, margin:10, flexDirection: 'row', justifyContent:"flex-start"}}>
-          <TextInput style={{ backgroundColor: "white", width:"90%"}}/> 
-          <AddIcon style={{alignSelf:"center"}}  name='note-add' size={25} onPress={this.addNewFeed} />
+          <TextInput style={{ backgroundColor: "grey", width:"90%"}}/> 
+          <AddIcon style={{alignSelf:"center"}}  name='note-add' size={25} onPress={this.setModal} />
         </View>
         {
           this.showFeeds(feeds)
@@ -109,3 +122,9 @@ export default class Feed extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+}
+export default connect(mapStateToProps)(Feed);
