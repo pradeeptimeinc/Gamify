@@ -25,7 +25,7 @@ export default class Quiz extends Component {
       renderItem = ({ item })=> {                
         return (        
         <View style={{ flexDirection: 'row', backgroundColor: 'white', elevation: 4,  margin: 20 }}>
-        <Text key={item.question_id} style={{ fontSize: 18}} > {item.question_id+')'} </Text>
+        <Text  style={{ fontSize: 18}} > {item.question_id+')'} </Text>
         <Text key={item.question_id} style={{ fontSize: 18,paddingLeft: 10}} onPress={this.onClickQuestion.bind(this, item)}>{item.question}</Text>
         </View> 
       )
