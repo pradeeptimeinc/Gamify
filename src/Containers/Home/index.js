@@ -54,7 +54,7 @@ class Home extends Component {
           <CardImage style={{ border: 1, borderColor: 'gray' }}>
             <Image
               style={{ width: 200, height: 150 }}
-              source={{ uri: 'https://getmdl.io/assets/demos/image_card.jpg' }}
+              source={{ uri: `${item.profile_url}` }}
             />
           </CardImage>
           <Text style={{ fontSize: 20, alignItems: 'center' }}>{item.first_name}</Text>
@@ -70,7 +70,7 @@ class Home extends Component {
           <CardImage style={{ flex:2, border: 1, borderColor: 'gray' }}>
             <Image
               style={{ width: 75, height: 75, borderRadius: 35, margin:3 }}
-              source={{ uri: 'https://getmdl.io/assets/demos/image_card.jpg' }}
+              source={{ uri: `${item.profile_url}` }}
             />
           </CardImage>
           <View style={{flex:2, alignItems:'center', justifyContent:'center', marginTop: 15, marginLeft:30}}>
