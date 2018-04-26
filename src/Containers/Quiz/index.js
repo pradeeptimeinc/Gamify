@@ -20,7 +20,9 @@ export default class Quiz extends Component {
       console.log('final quiz', parsedQuiz);
       this.setState({
         quiz: parsedQuiz,
-        ansIndex: 1000
+        ansIndex: 1000,
+        color: 'white',
+        text: '',
       })
     });
   }
@@ -79,32 +81,43 @@ export default class Quiz extends Component {
     }
   }
 
-  onClickAnswer = (option, index)=>{
+  onClickAnswer = (option, index, item)=>{
   console.log(' next',this.refs)
-    
     console.log('Answer '+option);
+    console.log('Answer full item', item);
+    console.log('Answer full index', index);
+    if(index == item.corrrect_choice) {
+      this.setState({
+        color: 'green'
+      })
+    }
+    else {
+      let ans = parseInt(item.corrrect_choice) + 1;
+      this.setState({
+        color: 'red',
+        text: `Correct answer is ${ans} `
+      })
+    }
     this.setState({
-      ansIndex: index
+      ansIndex: index,
   })
   setTimeout(()=> {
     this.setState({      
-      ansIndex: 1000
+      ansIndex: 1000,
+      text: ''
     })
-    this.refs.carousel.snapToNext(animated=true)
-  }, 550)
-
-  //snapToNext (animated = true, fireCallback = true)
+   this.refs.carousel.snapToNext(animated=true)
+  }, 2500)
 }
  
 
-  renderAnswerOptions(options) {
+  renderAnswerOptions(options,item) {
     let arr = [];
     options.map((option, index) => {
-      let backgroundColor = this.state.ansIndex == index ? '#3f7ee2' : 'white';
+      let backgroundColor = this.state.ansIndex == index ? this.state.color : 'white';
       let textColor = this.state.ansIndex == index ? 'white' : 'black';
       arr.push(
         <View style = {{width:200, borderColor: 'black', 
-        
         backgroundColor: backgroundColor,
         borderRadius: 10,
         width: 250,
@@ -112,7 +125,7 @@ export default class Quiz extends Component {
         borderBottomColor: '#000000',
         alignItems: 'center',        
         borderWidth: 1}} key={index}>  
-          <Text ref={index} key={index} style={{color: textColor, fontFamily: 'Avenir-Heavy',fontSize: 18, paddingBottom: 10,marginTop:10 }} onPress={() => this.onClickAnswer(option, index)} >
+          <Text ref={index} key={index} style={{color: textColor, fontFamily: 'Avenir-Heavy',fontSize: 18, paddingBottom: 10,marginTop:10 }} onPress={() => this.onClickAnswer(option, index, item)} >
           {index+1+'. '}{option}
           </Text>
         </View>
@@ -121,7 +134,6 @@ export default class Quiz extends Component {
     return arr;
   }
   _renderItemCarousel = ({ item, index }) => {
-    console.log('Item from renderItem carousel',item)
     return (
       <Card style={{ backgroundColor: 'white' }}>
         <View style={{}}>
@@ -130,8 +142,9 @@ export default class Quiz extends Component {
         </View>
          <View>          
           {
-            this.renderAnswerOptions(item.options)
+            this.renderAnswerOptions(item.options,item)
           }
+          <Text style={{ fontSize: 15, padding: 15,fontWeight: 'bold' }}>{this.state.text}</Text>
         </View>
       </Card>
     );
