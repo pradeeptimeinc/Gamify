@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, ListItem, ActivityIndicator } from 'react-native';
+import { Text, View, FlatList, ListItem, ActivityIndicator, TouchableOpacity } from 'react-native';
 import firebase from '../../Firebase';
 import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
@@ -37,8 +37,8 @@ export default class Quiz extends Component {
   }
 
   onClickQuestion(item) {
-    
-    
+
+
   }
 
   renderQuestions() {
@@ -81,12 +81,12 @@ export default class Quiz extends Component {
     }
   }
 
-  onClickAnswer = (option, index, item)=>{
-  console.log(' next',this.refs)
-    console.log('Answer '+option);
+  onClickAnswer = (option, index, item) => {
+    console.log(' next', this.refs)
+    console.log('Answer ' + option);
     console.log('Answer full item', item);
     console.log('Answer full index', index);
-    if(index == item.corrrect_choice) {
+    if (index == item.corrrect_choice) {
       this.setState({
         color: 'green'
       })
@@ -100,33 +100,35 @@ export default class Quiz extends Component {
     }
     this.setState({
       ansIndex: index,
-  })
-  setTimeout(()=> {
-    this.setState({      
-      ansIndex: 1000,
-      text: ''
     })
-   this.refs.carousel.snapToNext(animated=true)
-  }, 2500)
-}
- 
+    setTimeout(() => {
+      this.setState({
+        ansIndex: 1000,
+        text: ''
+      })
+      this.refs.carousel.snapToNext(animated = true)
+    }, 2500)
+  }
 
-  renderAnswerOptions(options,item) {
+
+  renderAnswerOptions(options, item) {
     let arr = [];
     options.map((option, index) => {
       let backgroundColor = this.state.ansIndex == index ? this.state.color : 'white';
       let textColor = this.state.ansIndex == index ? 'white' : 'black';
       arr.push(
-        <View style = {{width:200, borderColor: 'black', 
-        backgroundColor: backgroundColor,
-        borderRadius: 10,
-        width: 250,
-        marginBottom: 10,
-        borderBottomColor: '#000000',
-        alignItems: 'center',        
-        borderWidth: 1}} key={index}>  
-          <Text ref={index} key={index} style={{color: textColor, fontFamily: 'Avenir-Heavy',fontSize: 18, paddingBottom: 10,marginTop:10 }} onPress={() => this.onClickAnswer(option, index, item)} >
-          {index+1+'. '}{option}
+        <View style={{
+          width: 200, borderColor: 'black',
+          backgroundColor: backgroundColor,
+          borderRadius: 10,
+          width: 250,
+          marginBottom: 10,
+          borderBottomColor: '#000000',
+          alignItems: 'center',
+          borderWidth: 1
+        }} key={index}>
+          <Text ref={index} key={index} style={{ color: textColor, fontFamily: 'Avenir-Heavy', fontSize: 18, paddingBottom: 10, marginTop: 10 }} onPress={() => this.onClickAnswer(option, index, item)} >
+            {index + 1 + '. '}{option}
           </Text>
         </View>
       )
@@ -137,14 +139,14 @@ export default class Quiz extends Component {
     return (
       <Card style={{ backgroundColor: 'white' }}>
         <View style={{}}>
-          <View style={{width: 15, height: 30, backgroundColor: 'steelblue',marginLeft:15,marginTop:0}} />
-          <Text style={{ fontSize: 20, padding: 15,fontWeight: 'bold' }}>{item.question}</Text>
+          <View style={{ width: 15, height: 30, backgroundColor: 'steelblue', marginLeft: 15, marginTop: 0 }} />
+          <Text style={{ fontSize: 20, padding: 15, fontWeight: 'bold' }}>{item.question}</Text>
         </View>
-         <View>          
+        <View>
           {
-            this.renderAnswerOptions(item.options,item)
+            this.renderAnswerOptions(item.options, item)
           }
-          <Text style={{ fontSize: 15, padding: 15,fontWeight: 'bold' }}>{this.state.text}</Text>
+          <Text style={{ fontSize: 15, padding: 15, fontWeight: 'bold' }}>{this.state.text}</Text>
         </View>
       </Card>
     );

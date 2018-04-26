@@ -1,75 +1,129 @@
 import React, { Component } from 'react';
-import { FlatList, ActivityIndicator, Text, View, TextInput,Image } from 'react-native'
+import { FlatList, ActivityIndicator, Text, View, TextInput, Image,  Modal, TouchableHighlight} from 'react-native'
 import AddIcon from 'react-native-vector-icons/MaterialIcons' 
-import firebase from '../../Firebase';
-const arr =[1,2,3,4,5,6,7,8]
-export default class Feed extends Component {
+import firebase from '../../Firebase'
+import { connect } from 'react-redux'
+import moment from 'moment'
+import {
+  Card,
+  CardTitle,
+  CardImage,
+  CardContent,
+  CardAction
+} from '../../components/Card'
+
+class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feeds: {}
+      feeds: [],
+      initailLoad:true,
+      modalVisible: false,
+      text: ''
     }
   }
 
   componentDidMount() {
     const db = firebase.database();
     db.ref('/feeds').once('value', (snapshot) => {
-      const feed = snapshot.val();
-      console.log('snapshot', feed);
+      const feed = Object.values(snapshot.val());
       this.setState({
-       feeds: feed
+       feeds: feed,
+       initailLoad : false
       })
     });
+    db.ref('/feeds').on('child_added', this.onItemAdded)
+  }
+  onItemAdded =  (snapshot)=>{
+    const {feeds, initailLoad}  = this.state;
+    if(!initailLoad){
+       const newfeeds = [snapshot.val(),...feeds];
+      this.setState({
+        feeds: newfeeds
+      })
+    }
+   
   }
 
   renderItem = ({ item }) => {
-    console.log(item)
     return (
-      <View style={{ backgroundColor: 'white', elevation: 4, height: 200, justifyContent: 'center', margin: 5 }}>
-        <Text key={item.id} style={{ fontSize: 20, alignItems: 'center' }}>{item.content}</Text>
-        <Text key={item.id} style={{ fontSize: 20, alignItems: 'center' }}>{item.timestamp}</Text>
-        <Image style={{width:100, height:100}} source={{uri:`${item.image}`}}></Image>
+      < View style={{ backgroundColor: 'white',flexDirection:"row", justifyContent: 'flex-start', justifyContent: 'center', margin: 5 }}>
+        <CardImage style={{ flex:2, border: 1 }}>
+          <Image
+            style={{ width: 60, height: 60, borderRadius: 30, margin:3, borderColor: "#d6d4d4", borderWidth:3 }}
+            source={{ uri: `${item.image}` }}
+          />
+        </CardImage>
+        <View style={{flex:3}}>
+          <Text style={{ fontSize: 16, alignItems: 'center', margin:5 }}>{item.content}</Text>
+          <View style={{flexDirection:"row",alignItems:'flex-end', height:30}}>
+            <Text style={{ flex:3,fontSize: 12, fontWeight: 'bold', color:'#bab8b8' }}>{item.author}</Text>
+            <Text style={{ flex:4,fontSize: 12, alignSelf:'flex-end',color:'#444343' }}>{moment(item.timestamp).format('MMMM Do, h:mm:ss a')}</Text>
+          </View>
+        </View>
       </View>
     )
     // return ()
   }
 
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          alignSelf:'center',
+          height: 1,
+          width: "90%",
+          backgroundColor: "#d6d4d4",
+        }}
+      />
+    );
+  }
+
   showFeeds = (feeds) => {
-    console.log("show feeds::", Object.values(feeds))
-    let feedsToShow = Object.values(feeds)
-    if(feedsToShow && feedsToShow.length > 0) {
+    if(feeds && feeds.length > 0) {
       return(<FlatList
-      data={feedsToShow}
-      // extraData={this.state.addNewFeed}
-      keyExtractor={(feed) => feed.id}
+      ItemSeparatorComponent = {this.FlatListItemSeparator}          
+      data={feeds}
+      extraData={feeds}
+      keyExtractor={(feed)=>{feed.timestamp}}
       renderItem={this.renderItem}
     />)
+    } else {
+      return (
+        <ActivityIndicator size='large' />
+      )
     } 
   }
+
   addNewFeed = () => {
     const db = firebase.database();
-    db.ref('/feeds').push().set({
-        content: "this is a dummty content added 2",
-        id:1083,
-        timestamp:1112,
-        image:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Hopetoun_falls.jpg/600px-Hopetoun_falls.jpg"
+    const {first_name, profile_url, id} = this.props.user;
+    if(this.state.text) {
+      db.ref('/feeds').push().set({
+        author: first_name,
+        content: this.state.text,
+        id: id,
+        timestamp: Date.now(),
+        image: profile_url 
     });
-    // arr.unshift(arr[arr.length-1]+1);
-    // this.setState({
-    //   addNewFeed: this.state.addNewFeed+1
-    // })
+    }
+    this.setState({
+      text: ''
+    })
   }
+
   render() {
-    const { feeds } = this.state
-    console.log("feeds::", feeds)
+    const { feeds, modalVisible, text} = this.state
+    const iconColor = text ? 'black': 'grey' 
     return (
-      <View style={{ backgroundColor: 'grey', flex: 1, marginTop: 20 }}>
-        <Text >
-          Welcome to Feed
-        </Text>
-        <View style={{height:40, margin:10, flexDirection: 'row', justifyContent:"flex-start"}}>
-          <TextInput style={{ backgroundColor: "white", width:"90%"}}/> 
-          <AddIcon style={{alignSelf:"center"}}  name='note-add' size={25} onPress={this.addNewFeed} />
+      <View style={{ backgroundColor: 'white', flex: 1, marginTop: 20 }}>
+        <View style={{height:60, margin:10, flexDirection: 'row', justifyContent:"flex-start", borderColor: 'grey', borderWidth: 2, borderRadius: 30}}>
+          <TextInput 
+          placeholder="Post New Feed"
+          style={{ backgroundColor: "white", width:"85%", marginLeft:20, height:53, alignSelf: 'center' }}
+          onChangeText={(text) => this.setState({text})}
+          value={text}/> 
+          <AddIcon style={{alignSelf:"center", color: iconColor}}  name='send' size={30} onPress={this.addNewFeed} />
         </View>
         {
           this.showFeeds(feeds)
@@ -79,3 +133,9 @@ export default class Feed extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+}
+export default connect(mapStateToProps)(Feed);
