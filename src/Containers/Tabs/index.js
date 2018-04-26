@@ -20,6 +20,8 @@ export default TabNavigator({
           iconName = `ios-home${focused ? '' : '-outline'}`;
         } else if (routeName === 'Feed') {
           iconName = `ios-paper${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Peers') {
+          iconName = `ios-chatbubbles${focused ? '' : '-outline'}`;
         }
 
         // You can return any component that you like here! We usually use an

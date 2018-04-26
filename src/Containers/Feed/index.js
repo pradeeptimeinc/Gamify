@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, ActivityIndicator, Text, View, TextInput, Image,  Modal, TouchableHighlight} from 'react-native'
+import { FlatList, ActivityIndicator, Text, View, TextInput, Image} from 'react-native'
 import AddIcon from 'react-native-vector-icons/MaterialIcons' 
 import firebase from '../../Firebase'
 import { connect } from 'react-redux'
