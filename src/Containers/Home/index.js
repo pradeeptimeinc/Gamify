@@ -70,7 +70,7 @@ class Home extends Component {
     const { item, index } = props;
     return (
       <View key={item.id} >
-        <Card style={{ backgroundColor: 'white', height: 60, width: 200, flexDirection: "row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop: 5, marginRight: 5, marginBottom: 5, borderRadius: 55, borderWidth: 3, borderColor: "#bab8b8" }}>
+        <View style={{ backgroundColor: 'white', height: 60, width: 200, flexDirection: "row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop: 5, marginRight: 5, marginBottom: 5, borderRadius: 55, borderWidth: 2, borderColor: "#bab8b8" }}>
           <CardImage style={{ flex: 1, border: 1, borderColor: 'gray' }}>
             <Image
               style={{ width: 50, height: 50, borderRadius: 25, margin: 3 }}
@@ -84,7 +84,7 @@ class Home extends Component {
           <View style={{ backgroundColor: 'gold', position: 'absolute', width: 30, height: 30, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', borderRadius: 30, borderColor: 'white', borderWidth: 3, marginLeft: -15, paddingVertical: -60 }}>
             <Text style={{ fontSize: 20, fontWeight: "bold" }} >{index + 1}</Text>
           </View>
-        </Card>
+        </View>
       </View>
     )
     // return ()
