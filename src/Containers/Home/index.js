@@ -31,6 +31,7 @@ class Home extends Component {
     // const query = db.ref('/employees').orderByChild('points');
     db.ref('/employees').once('value', (snapshot) => {
       const emps = Object.values(snapshot.val());
+      console.log('snapshot', emps);
       let empsTop = _.orderBy(emps, ['points'], ['desc']);
       empsTop = empsTop.splice(0, 5);
       let spotEmp = _.filter(emps, ['spot', true]);
@@ -69,18 +70,18 @@ class Home extends Component {
     const { item, index } = props;
     return (
       <View key={item.id} >
-        <Card style={{ backgroundColor: 'white', height: 85, width: 270, flexDirection: "row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop: 5, marginRight: 5, marginBottom: 5, borderRadius: 55, borderWidth: 3, borderColor: "#bab8b8" }}>
-          <CardImage style={{ flex: 2, border: 1, borderColor: 'gray' }}>
+        <Card style={{ backgroundColor: 'white', height: 60, width: 220, flexDirection: "row", justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 8, marginTop: 5, marginRight: 5, marginBottom: 5, borderRadius: 55, borderWidth: 3, borderColor: "#bab8b8" }}>
+          <CardImage style={{ flex: 1, border: 1, borderColor: 'gray' }}>
             <Image
-              style={{ width: 75, height: 75, borderRadius: 35, margin: 3 }}
+              style={{ width: 50, height: 50, borderRadius: 25, margin: 3 }}
               source={{ uri: `${item.profile_url}` }}
             />
           </CardImage>
-          <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', marginTop: 15, marginLeft: 30 }}>
+          <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', marginTop: 6, marginLeft:8 }}>
             <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color: '#444343' }}>{item.first_name}</Text>
             <Text style={{ fontSize: 20, alignSelf: 'flex-start', fontWeight: 'bold', color: '#bab8b8' }}>{item.points} points</Text>
           </View>
-          <View style={{ backgroundColor: 'gold', position: 'absolute', width: 40, height: 40, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', borderRadius: 30, borderColor: 'white', borderWidth: 3, marginLeft: -10, paddingVertical: -40 }}>
+          <View style={{ backgroundColor: 'gold', position: 'absolute', width: 30, height: 30, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', borderRadius: 30, borderColor: 'white', borderWidth: 3, marginLeft: -15, paddingVertical: -60 }}>
             <Text style={{ fontSize: 20, fontWeight: "bold" }} >{index + 1}</Text>
           </View>
         </Card>
@@ -140,20 +141,31 @@ class Home extends Component {
     const { topEmp, spotEmp, starEmp } = this.state;
     const { user } = this.props;
     return (
-      <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
-        <Card style={{ backgroundColor: 'white', flex: 1, margin: 20, justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-            <Image
-              style={[styles.logo, {
-                resizeMode: Image.resizeMode.contain,
-              },]}
-              source={require('../../assets/Points.jpg')}
-            />
-            <Text style={{ height: 50, marginTop: 25, marginLeft: 5, fontSize: 20, fontWeight: 'bold', }}>
-              <AnimateNumber value={user.points} countBy={5} timing="easeOut" />
-            </Text>
+      <ScrollView style={{ backgroundColor: 'white', flex: 1 , margin: 5, marginTop: 30}}>
+        <View style={{flex: 1,flexDirection:'row', justifyContent: 'center', marginBottom: 10}}>
+          <CardImage style={{flex:1,flexDirection:'row' }}>
+                <Image
+                  style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 2, borderColor: 'grey'}}
+                  source={{ uri: `${user.profile_url}` }}
+                />
+
+          </CardImage>
+          <View style={{flex: 2, flexDirection: 'column'}}>
+            <Text style={{ flex:1, fontSize: 25, fontWeight: 'bold' }}>Welcome {user.first_name} !!</Text>
+            <View style={{  flex:1,alignItems: 'center', flexDirection: 'row' }}>
+              <Image
+                style={[styles.logo, {
+                  resizeMode: Image.resizeMode.contain,
+                },]}
+                source={require('../../assets/Points.jpg')}
+              />
+              <Text style={{ height: 50, marginTop: 25, marginLeft: 5, fontSize: 20, fontWeight: 'bold', color: 'green'}}>
+                <AnimateNumber value={user.points} countBy={2} timing="easeOut" /> Points
+              </Text>
+            </View>
           </View>
-        </Card>
+        </View>
+
         <View style={{ flex: 1 }}>
           <Text style={{ fontSize: 22, alignItems: 'center', fontWeight: 'bold' }}>Top 5 Scorer</Text>
           {
@@ -185,7 +197,7 @@ const styles = StyleSheet.create({
 })
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
+    user: state.user
   }
 }
 export default connect(mapStateToProps)(Home);
