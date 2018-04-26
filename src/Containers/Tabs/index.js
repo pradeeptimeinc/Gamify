@@ -5,24 +5,12 @@ import { TabNavigator, TabBarBottom , StackNavigator } from 'react-navigation';
 import HomeScreen from '../Home';
 import FeedScreen from '../Feed';
 import QuizScreen from '../Quiz';
-import QuizDetailsScreen from '../QuizDetails';
 
-export const QuizStack = StackNavigator({
-  Quiz: {
-    screen: QuizScreen,
-    navigationOptions: {
-      title: 'Quiz',
-    },
-  },
-  QuizDetails: {
-    screen: QuizDetailsScreen,
-  },
-});
 
 export default TabNavigator({
   Home: { screen: HomeScreen },
   Feed: { screen: FeedScreen },
-  Quiz: { screen: QuizStack },
+  Quiz: { screen: QuizScreen },
 },
 {
   navigationOptions: ({ navigation }) => ({
@@ -36,8 +24,6 @@ export default TabNavigator({
       } else if (routeName === 'Quiz') {
         iconName = `ios-help-circle-outliner${focused ? '' : '-outline'}`;
       }
-
-
       // You can return any component that you like here! We usually use an
       // icon component from react-native-vector-icons
       return <Ionicons name={iconName} size={25} color={tintColor} />;
