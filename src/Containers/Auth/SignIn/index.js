@@ -46,7 +46,9 @@ class SignIn extends Component {
     Promise.resolve(this.validateEmail())
       .then(this.validatePassword())
       .then(() => {
-        console.log('calling dvgw')
+        this.setState({
+          fetching: true
+        })
         console.log(!isEmpty(email), !isEmpty(password), isEmpty(emailError), isEmpty(passwordError))
         if (!isEmpty(email) && !isEmpty(password) && isEmpty(emailError) && isEmpty(passwordError)) {
           console.log('calling db')
@@ -54,6 +56,9 @@ class SignIn extends Component {
           db.ref('employees').orderByChild("id").equalTo(email).once("value", snapshot => {
             const userData = Object.values(snapshot.val())[0];
             console.log('userData in signIn', userData);
+            this.setState({
+              fetching: false
+            })
             return this.props.userAction.setUser(userData);
           });
         }
@@ -81,7 +86,7 @@ class SignIn extends Component {
                 this.setState({ email })
                 return this.validateEmail(email)
               }}
-              placeholder='UserName'
+              placeholder='user id'
               inputStyle={styles.input}
               // onSubmitEditing={() => { this.secondTextInput.focus() }}
               blurOnSubmit={false}
@@ -112,8 +117,8 @@ class SignIn extends Component {
               title={'login'}
               buttonStyle={styles.submitButton}
               disabledStyle={styles.disabledButton}
-              // loading={this.state.fetching}
-              // disabled={this.state.fetching}
+              loading={this.state.fetching}
+              disabled={this.state.fetching}
               loadingRight
               rounded
               onPress={() => this.signIn()}
