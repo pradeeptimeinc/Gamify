@@ -1,7 +1,10 @@
-import React from 'react';
-import { View, Text, FlatList } from 'react-native';
-import firebase from '../../Firebase';
+import React from 'react'
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import firebase from '../../Firebase'
 import { connect } from 'react-redux'
+import {
+  CardImage
+} from '../../components/Card'
 class Peers extends React.Component {
   constructor(props) {
     super(props)
@@ -9,6 +12,13 @@ class Peers extends React.Component {
       peers: [],
     }
   }
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+
+    return {
+      title: 'Your Peers',
+    }
+  };
   componentDidMount() {
     const { user } = this.props;
     console.log('user', user);
@@ -36,47 +46,47 @@ class Peers extends React.Component {
   }
   openChat = (item) => {
     console.log('calling chat', { title: 'ejrfjerb' })
-    this.props.navigation.navigate('Chat', { title: item.first_name });
+    this.props.navigation.navigate('Chat', { title: item.first_name, id: item.id });
   }
   renderItem = ({ item }) => {
     console.log('item ic ', item);
     return (
-      <View >
-        <Text onPress={() => this.openChat(item)} style={{ fontSize: 25, alignItems: 'center', margin: 5 }}>{item.first_name}</Text>
-      </View>
-
-      // < View style={{ backgroundColor: 'gray', flexDirection: "row", justifyContent: 'flex-start', justifyContent: 'center', margin: 5 }}>
-      //   {/* <CardImage style={{ flex: 2, border: 1 }}>
-      //     <Image
-      //       style={{ width: 60, height: 60, borderRadius: 30, margin: 3, borderColor: "#d6d4d4", borderWidth: 3 }}
-      //       source={{ uri: `${item.image}` }}
-      //     />
-      //   </CardImage> */}
-      //   <View style={{ flex: 3 }}>
-      //     <Text style={{ fontSize: 16, alignItems: 'center', margin: 5 }}>{item.first_name}</Text>
-      //     {/* <View style={{ flexDirection: "row", alignItems: 'flex-end', height: 30 }}>
-      //       <Text style={{ flex: 3, fontSize: 12, fontWeight: 'bold', color: '#bab8b8' }}>{item.author}</Text>
-      //       <Text style={{ flex: 4, fontSize: 12, alignSelf: 'flex-end', color: '#444343' }}>{moment(item.timestamp).format('MMMM Do, h:mm:ss a')}</Text>
-      //     </View> */}
-      //   </View>
-      // </View>
+      < TouchableOpacity onPress={() => this.openChat(item)} style={{ backgroundColor: 'white', flexDirection: "row", justifyContent: 'flex-start', justifyContent: 'center' }}>
+        <CardImage style={{ flex: 2, border: 1 }}>
+          <Image
+            style={{ width: 60, height: 60, borderRadius: 30, margin: 3, marginLeft: 10, borderColor: "#d6d4d4", borderWidth: 3 }}
+            source={{ uri: `${item.profile_url}` }}
+          />
+        </CardImage>
+        <Text style={{ flex: 3, fontSize: 20, alignSelf: 'center', margin: 5, color: '#444343' }}>{item.first_name}</Text>
+      </TouchableOpacity>
     )
-    // return ()
   }
+
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          alignSelf: 'center',
+          height: 1,
+          width: "100%",
+          backgroundColor: "#d6d4d4",
+        }}
+      />
+    );
+  }
+
   render() {
     console.log('this.user', this.state.peers);
     const { peers } = this.state;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <FlatList
-          ItemSeparatorComponent={this.FlatListItemSeparator}
-          data={peers}
-          extraData={peers}
-          keyExtractor={(peer) => { peer.id }}
-          renderItem={this.renderItem}
-        />)
-      </View>
-    );
+      <FlatList
+        ItemSeparatorComponent={this.FlatListItemSeparator}
+        data={peers}
+        extraData={peers}
+        keyExtractor={(peer) => { peer.id }}
+        renderItem={this.renderItem}
+      />);
   }
 }
 const mapStateToProps = (state) => {
