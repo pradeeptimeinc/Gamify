@@ -48,7 +48,7 @@ export default class Feed extends Component {
   }
   addNewFeed = () => {
     const db = firebase.database();
-    db.ref('/feeds/'+2).set({
+    db.ref('/feeds').push().set({
         content: "this is a dummty content added 2",
         id:1083,
         timestamp:1112,
