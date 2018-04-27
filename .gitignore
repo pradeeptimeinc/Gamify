@@ -37,7 +37,8 @@ npm-debug.log
 yarn-error.log
 
 # ignore firebase
-src/Firebase
+src/Firebase/
+ios/Gamify.xcodeproj/project.pbxproj
 # BUCK
 buck-out/
 \.buckd/
